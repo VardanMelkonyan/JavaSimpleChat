@@ -1,16 +1,14 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Scanner;
+import java.io.*;
 
 public class ReaderThread extends Thread {
 
 	private BufferedReader reader;
+	private DataInputStream inputStream;
 
 	public ReaderThread(Client client) throws IOException {
 		InputStream input = client.getSocket().getInputStream();
 		reader = new BufferedReader(new InputStreamReader(input));
+		inputStream = new DataInputStream(input);
 	}
 
 	@Override
@@ -20,7 +18,7 @@ public class ReaderThread extends Thread {
 			int length;
 			char[] chars;
 			try {
-				length = reader.read();
+				length = inputStream.readInt();
 				if (length == -1) continue;
 
 				chars = new char[length];
